@@ -1,7 +1,6 @@
-﻿using AODL.Document.Content.Draw;
-using AODL.Document.Content.Tables;
-using AODL.Document.Content.Text;
-using AODL.Document.TextDocuments;
+﻿using Independentsoft.Office.Odf;
+using Independentsoft.Office.Odf.Drawing;
+using Independentsoft.Office.Odf.Styles;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,61 +15,79 @@ namespace QRGenerator
 {
     class OdtMaker
     {
-
         public static void GenerateOdt(List<QRModel> listQr)
         {
-            int Rows = (listQr.Count / 8) + 1;
-            Console.WriteLine(Rows);
-            int Columns = 8;
-            TextDocument document = new TextDocument();
-            document.New();
-            //Create a table for a text document using the TableBuilder
-            Table table = TableBuilder.CreateTextDocumentTable(
-                document,
-                "table1",
-                "table1",
-                Rows,
-                Columns,
-                16.99,
-                false,
-                true);
+            int Columns = 11;
+            int Rows = (listQr.Count / Columns) + 1;
 
-            int index = 0;
-            //Fill the cells
-            foreach (Row row in table.RowCollection)
+            TextDocument doc = new TextDocument();
+
+            ParagraphStyle fontStyle = new ParagraphStyle("P100");
+            fontStyle.TextProperties.Font = "Arial";
+            fontStyle.TextProperties.FontSize = new Size(5,Unit.Point);
+            fontStyle.ParagraphProperties.TextAlignment = TextAlignment.Center;
+            doc.AutomaticStyles.Styles.Add(fontStyle);
+
+
+            ParagraphStyle imgStyle = new ParagraphStyle("P200");
+            imgStyle.ParagraphProperties.TextAlignment = TextAlignment.Center;
+            doc.AutomaticStyles.Styles.Add(imgStyle);
+
+            Table table = new Table();
+            for (int i = 0; i < Rows; i++)
             {
-                foreach (Cell cell in row.CellCollection)
+                Row row = new Row();
+                for (int j = 0; j < Columns; j++)
                 {
-                    AODL.Document.Content.Text.Paragraph paragraph = ParagraphBuilder.CreateStandardTextParagraph(document);
-                    if (index >= listQr.Count) {
+                int index = (i * Columns) + j;
+                    
+
+                    Cell cell;
+                    if (index >= listQr.Count)
+                    {
                         Console.WriteLine("In" + index);
-                        paragraph.TextContent.Add(new SimpleText(document, "\n")); 
+                        cell = new Cell("");
                     }
                     else
                     {
-
                         var qr = listQr.ElementAt(index);
-                        Console.WriteLine(qr.Phrase);
-                        //Create a standard paragraph
-                        Frame frame = new Frame(document, "frame1", qr.Phrase, qr.Phrase + ".png");
-                        frame.SvgHeight = "0.6043in";
-                        frame.SvgWidth = "0.6043in";
-                        paragraph.Content.Add(frame);
-                        //Add some simple text
-                        paragraph.TextContent.Add(new SimpleText(document, "\n" + qr.Phrase));
+                        cell = GetCellValue(qr.Phrase);
                     }
-                    cell.Content.Add(paragraph);
-                    index++;
+                        row.Cells.Add(cell);
                 }
-            }
-            //Merge some cells. Notice this is only available in text documents!
-            //table.RowCollection[1].MergeCells(document, 1, 2, true);
-            //Add table to the document
-            document.Content.Add(table);
-            //Save the document
-            document.SaveTo("QRFile.odt");
+                table.Rows.Add(row);
 
+            }
+
+            doc.Body.Add(table);
+            doc.Save("QRFile.odt",true);
         }
 
+        public static Cell GetCellValue(String phrase)
+        {
+            Cell cell = new Cell();
+
+            double width, height;
+            width = height = 1.058;
+
+            Image image1 = new Image(phrase+".png");
+            Frame frame1 = new Frame();
+            frame1.Style = "fr1";
+            frame1.Width = new Size(width, Unit.Centimeter);
+            frame1.Height = new Size(height, Unit.Centimeter);
+            frame1.Add(image1);
+
+            Paragraph qrImage = new Paragraph();
+            qrImage.Add(frame1);
+            qrImage.Style = "P200";
+
+            Paragraph label = new Paragraph();
+            label.Add(phrase);
+            label.Style = "P100";
+
+            cell.Content.Add(qrImage);
+            cell.Content.Add(label);
+            return cell;
+        }
     }
 }
