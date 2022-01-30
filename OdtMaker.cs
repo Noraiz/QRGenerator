@@ -1,6 +1,7 @@
-﻿using Independentsoft.Office.Odf;
+using Independentsoft.Office.Odf;
 using Independentsoft.Office.Odf.Drawing;
 using Independentsoft.Office.Odf.Styles;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,6 +21,7 @@ namespace QRGenerator
             int Columns = 11;
             int Rows = (listQr.Count / Columns) + 1;
 
+
             TextDocument doc = new TextDocument();
 
             ParagraphStyle fontStyle = new ParagraphStyle("P100");
@@ -27,6 +29,7 @@ namespace QRGenerator
             fontStyle.TextProperties.FontSize = new Size(5,Unit.Point);
             fontStyle.ParagraphProperties.TextAlignment = TextAlignment.Center;
             doc.AutomaticStyles.Styles.Add(fontStyle);
+
 
 
             ParagraphStyle imgStyle = new ParagraphStyle("P200");
@@ -39,6 +42,7 @@ namespace QRGenerator
                 Row row = new Row();
                 for (int j = 0; j < Columns; j++)
                 {
+
                 int index = (i * Columns) + j;
                     
                     Cell cell;
