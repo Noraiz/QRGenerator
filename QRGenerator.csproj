@@ -35,17 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AODL, Version=1.2.0.1, Culture=neutral">
-      <HintPath>packages\AODL.1.2.0.1\lib\AODL.dll</HintPath>
-    </Reference>
-    <Reference Include="Aspose.Words, Version=22.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Words.22.1.0\lib\net461\Aspose.Words.dll</HintPath>
-    </Reference>
-    <Reference Include="Aspose.Words.Pdf2Word, Version=22.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>packages\Aspose.Words.22.1.0\lib\net461\Aspose.Words.Pdf2Word.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
       <HintPath>packages\AODL.1.2.0.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Independentsoft.Office.Odf, Version=2.0.670.13054, Culture=neutral, PublicKeyToken=76be97fe952f1ec7, processorArchitecture=MSIL">
+      <HintPath>packages\Independentsoft.Office.Odf.2.0.670\lib\net45\Independentsoft.Office.Odf.dll</HintPath>
     </Reference>
     <Reference Include="QRCodeEncoderLibrary, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\QRCodeEncoderLibrary.2.0.1\lib\net462\QRCodeEncoderLibrary.dll</HintPath>
