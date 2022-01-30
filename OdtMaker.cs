@@ -41,7 +41,6 @@ namespace QRGenerator
                 {
                 int index = (i * Columns) + j;
                     
-
                     Cell cell;
                     if (index >= listQr.Count)
                     {
