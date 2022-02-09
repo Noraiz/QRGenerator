@@ -21,13 +21,40 @@ namespace QRGenerator
             int Rows = (listQr.Count / Columns) + 1;
 
             TextDocument doc = new TextDocument();
+            PageLayout pl = new PageLayout();
+            pl.Name = "Layout";
+            pl.PageLayoutProperties.TopMargin = new Size
+            {
+                Value = 0.32,
+                Unit = Unit.Inch
+            };
+            pl.PageLayoutProperties.LeftMargin = new Size
+            {
+                Value = 0.32,
+                Unit = Unit.Inch
+            };
+            pl.PageLayoutProperties.RightMargin = new Size
+            {
+                Value = 0.39,
+                Unit = Unit.Inch
+            };
+
+            doc.CommonStyles.AutomaticStyles = new AutomaticStyles();
+            doc.CommonStyles.AutomaticStyles.PageLayouts.Add(pl);
+
+            Font arial = new Font();
+            arial.Name = "Arial";
+            arial.Family = "Arial";
+            arial.GenericFontFamily = GenericFontFamily.Swiss;
+            arial.Pitch = FontPitch.Variable;
+
+            doc.Fonts.Add(arial);
 
             ParagraphStyle fontStyle = new ParagraphStyle("P100");
             fontStyle.TextProperties.Font = "Arial";
             fontStyle.TextProperties.FontSize = new Size(5,Unit.Point);
             fontStyle.ParagraphProperties.TextAlignment = TextAlignment.Center;
             doc.AutomaticStyles.Styles.Add(fontStyle);
-
 
             ParagraphStyle imgStyle = new ParagraphStyle("P200");
             imgStyle.ParagraphProperties.TextAlignment = TextAlignment.Center;
@@ -57,6 +84,13 @@ namespace QRGenerator
                 table.Rows.Add(row);
 
             }
+
+            MasterPage masterPage1 = new MasterPage();
+            masterPage1.Name = "Standard";
+            masterPage1.PageLayout = "Layout";
+
+            doc.CommonStyles.MasterStyles = new MasterStyles();
+            doc.CommonStyles.MasterStyles.MasterPages.Add(masterPage1);
 
             doc.Body.Add(table);
             doc.Save("QRFile.odt",true);
