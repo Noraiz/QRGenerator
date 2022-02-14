@@ -16,13 +16,14 @@ namespace QRGenerator
 {
     class OdtMaker
     {
+        private static TextDocument doc;
         public static void GenerateOdt(List<QRModel> listQr)
         {
             int Columns = 11;
             int Rows = (listQr.Count / Columns) + 1;
 
+            doc = new TextDocument();
 
-            TextDocument doc = new TextDocument();
             PageLayout pl = new PageLayout();
             pl.Name = "Layout";
             pl.PageLayoutProperties.TopMargin = new Size
@@ -105,14 +106,19 @@ namespace QRGenerator
         {
             Cell cell = new Cell();
 
+            CellStyle cellStyle = new CellStyle("cs");
+            
+            cellStyle.CellProperties.TopPadding = new Size { Unit = Unit.Inch, Value = 0.142 };
+            cellStyle.CellProperties.BottomPadding = new Size { Unit = Unit.Inch, Value = 0.142 };
+            doc.AutomaticStyles.Styles.Add(cellStyle);
             double width, height;
-            width = height = 1.058;
+            width = height = 0.42;
 
             Image image1 = new Image(phrase+".png");
             Frame frame1 = new Frame();
             frame1.Style = "fr1";
-            frame1.Width = new Size(width, Unit.Centimeter);
-            frame1.Height = new Size(height, Unit.Centimeter);
+            frame1.Width = new Size(width, Unit.Inch);
+            frame1.Height = new Size(height, Unit.Inch);
             frame1.Add(image1);
 
             Paragraph qrImage = new Paragraph();
@@ -122,7 +128,7 @@ namespace QRGenerator
             Paragraph label = new Paragraph();
             label.Add(phrase);
             label.Style = "P100";
-
+            cell.Style = "cs";
             cell.Content.Add(qrImage);
             cell.Content.Add(label);
             return cell;
